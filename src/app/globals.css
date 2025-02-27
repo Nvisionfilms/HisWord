@@ -1,24 +1,233 @@
-@import "tailwindcss";
-
-@theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 45 47% 99%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 47 95% 50%;
+  --primary-foreground: 26 83.3% 14.1%;
+  --secondary: 26 83.3% 95.9%;
+  --secondary-foreground: 26 83.3% 14.1%;
+  --muted: 26 83.3% 95.9%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 26 83.3% 95.9%;
+  --accent-foreground: 26 83.3% 14.1%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 47 95% 50%;
+  --radius: 0.75rem;
+  --primary: #4CAF50;
+  --primary-hover: #45a049;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
+  height: -webkit-fill-available;
+}
+
+* {
+  @apply border-border;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-background text-foreground antialiased min-h-screen min-h-[-webkit-fill-available];
+  font-feature-settings: "rlig" 1, "calt" 1;
+  background-color: #f9f9f9;
+}
+
+/* Mobile-first responsive design */
+@layer utilities {
+  .header-height {
+    height: min(300px, 40vh);
+  }
+
+  .main-offset {
+    margin-top: min(300px, 40vh);
+  }
+
+  .responsive-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6;
+  }
+}
+
+/* Custom Utilities */
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.hover\:bg-primary\/90:hover {
+  background-color: var(--primary-hover);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+/* Card Styles */
+.story-card {
+  @apply bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow;
+}
+
+.verse-card {
+  @apply p-6 rounded-xl glass-container space-y-3;
+}
+
+/* Button Styles */
+.emotion-button {
+  @apply px-4 py-2 rounded-full bg-white shadow-md hover:shadow-lg
+         transition-all duration-200 text-gray-700 hover:text-primary
+         border border-gray-200 hover:border-primary;
+}
+
+.emotion-tag {
+  @apply px-3 py-1.5 rounded-full text-sm font-medium transition-colors
+         bg-primary/10 text-primary-foreground hover:bg-primary/20 
+         cursor-pointer;
+}
+
+/* Grid Layouts */
+.responsive-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-in {
+  @apply animate-fade-in;
+}
+
+.slide-up {
+  @apply animate-slide-up;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Safe Area Insets */
+.safe-padding {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Glass Effect */
+.glass-effect {
+  @apply backdrop-blur-md bg-white/30 border border-white/20;
+}
+
+.glass-container {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg;
+}
+
+/* Custom scrollbar styles */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  .header-height {
+    height: 60vh;
+  }
+
+  .main-offset {
+    margin-top: 60vh;
+  }
+}
+
+.chat-message {
+  @apply p-4 rounded-xl max-w-[85%];
+}
+
+.chat-message.user {
+  @apply bg-primary/10 ml-auto;
+}
+
+.chat-message.assistant {
+  @apply glass-container;
+}
+
+.input-container {
+  @apply fixed bottom-0 left-0 right-0 p-4 glass-container border-t;
+}
+
+.main-container {
+  @apply max-w-4xl mx-auto px-4 py-8 min-h-screen pb-32;
+}
+
+/* Typography responsive adjustments */
+.responsive-text {
+  @apply text-base sm:text-lg md:text-xl;
+}
+
+.responsive-heading {
+  @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+}
+
+.verse-text {
+  @apply text-lg leading-relaxed text-gray-700 font-serif;
+}
+
+.verse-reference {
+  @apply text-sm text-primary-foreground/80 font-medium;
+}
+
+/* Add styles for background image blend */
+.bg-blend-overlay {
+  background-blend-mode: overlay;
+}
+
+/* Add custom background opacity classes */
+.bg-opacity-30 {
+  --tw-bg-opacity: 0.3;
 }
